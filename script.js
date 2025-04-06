@@ -9,6 +9,10 @@ const gameBoard = (function () {
 })();
 
 const displayController = (function () {
+  const getBoardContainer = document.querySelector('#boardcontainer');
+
+  function createBoard() {}
+
   const displayBoard = () => {
     console.log(`        ${gameBoard.board[0]} | ${gameBoard.board[1]} | ${gameBoard.board[2]}
       ----------
@@ -27,7 +31,7 @@ const gameController = (function () {
   let currentPlayer = '';
   let gameOver = false;
 
-  function getPickedSpot() {
+  const getPickedSpot = () => {
     while (true) {
       let getSpot = parseInt(prompt('pick a spot: '));
 
@@ -35,9 +39,9 @@ const gameController = (function () {
         return getSpot;
       }
     }
-  }
+  };
 
-  function checkWinner() {
+  const checkWinner = () => {
     const winConditions = [
       [0, 1, 2],
       [3, 4, 5],
@@ -66,9 +70,9 @@ const gameController = (function () {
       console.log(`Game Over!!
         ${currentPlayer} is the winner`);
     }
-  }
+  };
 
-  function playGame() {
+  const playGame = () => {
     for (let i = 1; i <= maxTurns; i++) {
       let spotPicked = getPickedSpot();
 
@@ -80,13 +84,12 @@ const gameController = (function () {
         currentPlayer = playerTwo;
       }
       displayController.displayBoard();
-
       checkWinner();
       if (gameOver) {
         return;
       }
     }
-  }
+  };
 
   playGame();
 })();
