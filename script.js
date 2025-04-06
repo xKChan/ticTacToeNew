@@ -24,6 +24,49 @@ const gameController = (function () {
   let maxTurns = 9;
   let playerOne = 'X';
   let playerTwo = 'O';
+  let currentPlayer = '';
+  let gameOver = false;
+
+  function getPickedSpot() {
+    while (true) {
+      let getSpot = parseInt(prompt('pick a spot: '));
+
+      if (gameBoard.board[getSpot] == '') {
+        return getSpot;
+      }
+    }
+  }
+
+  function checkWinner() {
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < winConditions.length; i++) {
+      const conditions = winConditions[i];
+      const square1 = gameBoard.board[conditions[0]];
+      const square2 = gameBoard.board[conditions[1]];
+      const square3 = gameBoard.board[conditions[2]];
+
+      if (square1 == '' || square2 == '' || square3 == '') {
+        continue;
+      } else if (square1 == square2 && square2 == square3) {
+        gameOver = true;
+        break;
+      }
+    }
+    if (gameOver) {
+      console.log(`Game Over!!
+        ${currentPlayer} is the winner`);
+    }
+  }
 
   function playGame() {
     for (let i = 1; i <= maxTurns; i++) {
@@ -31,27 +74,19 @@ const gameController = (function () {
 
       if (i % 2 == 0) {
         gameBoard.board[spotPicked] = playerOne;
+        currentPlayer = playerOne;
       } else {
         gameBoard.board[spotPicked] = playerTwo;
+        currentPlayer = playerTwo;
       }
       displayController.displayBoard();
 
       checkWinner();
-    }
-  }
-
-  function getPickedSpot() {
-    while (true) {
-      let getSpot = parseInt(prompt('pick a spot: '));
-
-      if (gameBoard.board[getSpot] == '') {
-        console.log('hi');
-        return getSpot;
+      if (gameOver) {
+        return;
       }
     }
   }
 
-  function checkWinner() {}
-
-  // playGame();
+  playGame();
 })();
