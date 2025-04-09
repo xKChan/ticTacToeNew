@@ -1,0 +1,12 @@
+#boardContainer {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.gameGrid {
+  font-size: 10rem;
+}

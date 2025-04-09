@@ -3,24 +3,26 @@ function createPlayer(name, marker) {
 }
 
 const gameBoard = (function () {
-  let board = ['', '', '', '', '', '', '', '', ''];
+  let board = ['X', 'X', 'O', 'O', 'X', 'O', 'O', 'X', 'X'];
 
   return { board };
 })();
 
 const displayController = (function () {
-  const getBoardContainer = document.querySelector('#boardcontainer');
-
-  function createBoard() {}
+  const getBoardContainer = document.querySelector('#boardContainer');
 
   const displayBoard = () => {
-    console.log(`        ${gameBoard.board[0]} | ${gameBoard.board[1]} | ${gameBoard.board[2]}
-      ----------
-        ${gameBoard.board[3]} | ${gameBoard.board[4]} | ${gameBoard.board[5]}
-      ----------
-        ${gameBoard.board[6]} | ${gameBoard.board[7]} | ${gameBoard.board[8]}`);
+    let gridSize = gameBoard.board.length;
+    for (let i = 0; i < gridSize; i++) {
+      const newCell = document.createElement('div');
+      newCell.classList.add('gameGrid');
+      newCell.setAttribute('id', `sq${i}`);
+      newCell.textContent = gameBoard.board[i];
+      getBoardContainer.appendChild(newCell);
+    }
   };
 
+  displayBoard();
   return { displayBoard };
 })();
 
@@ -91,5 +93,5 @@ const gameController = (function () {
     }
   };
 
-  playGame();
+  // playGame();
 })();
