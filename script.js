@@ -15,8 +15,8 @@ const displayController = (function () {
     let gridSize = gameBoard.board.length;
     for (let i = 0; i < gridSize; i++) {
       const newCell = document.createElement('div');
-      newCell.classList.add('gameGrid');
-      newCell.setAttribute('id', `sq${i}`);
+      newCell.classList.add('gameGrid', `spot${i}`);
+      newCell.setAttribute('id', i);
       newCell.textContent = gameBoard.board[i];
       getBoardContainer.appendChild(newCell);
     }
@@ -34,14 +34,29 @@ const gameController = (function () {
   let gameOver = false;
 
   const getPickedSpot = () => {
-    while (true) {
-      let getSpot = parseInt(prompt('pick a spot: '));
+    const getSpot = document.querySelectorAll('.gameGrid');
 
-      if (gameBoard.board[getSpot] == '') {
-        return getSpot;
-      }
-    }
+    getSpot.forEach(e => {
+      e.addEventListener('click', () => {
+        console.log(e.getAttribute('id'));
+        let spotPicked = e.getAttribute('id');
+        if (gameBoard.board[spotPicked] == '') {
+          console.log(spotPicked);
+          return spotPicked;
+        }
+      });
+    });
   };
+
+  // const getPickedSpot = () => {
+  //   while (true) {
+  //     let getSpot = parseInt(prompt('pick a spot: '));
+
+  //     if (gameBoard.board[getSpot] == '') {
+  //       return getSpot;
+  //     }
+  //   }
+  // };
 
   const checkWinner = () => {
     const winConditions = [
@@ -92,6 +107,7 @@ const gameController = (function () {
       }
     }
   };
+  getPickedSpot();
 
   // playGame();
 })();
