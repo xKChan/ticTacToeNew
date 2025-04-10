@@ -3,7 +3,7 @@ function createPlayer(name, marker) {
 }
 
 const gameBoard = (function () {
-  let board = ['X', 'X', 'O', 'O', 'X', 'O', 'O', 'X', 'X'];
+  let board = ['', '', '', '', '', '', '', '', ''];
 
   return { board };
 })();
@@ -22,8 +22,14 @@ const displayController = (function () {
     }
   };
 
+  const clearBoard = () => {
+    while (getBoardContainer.firstChild) {
+      getBoardContainer.removeChild(getBoardContainer.lastChild);
+    }
+  };
+
   displayBoard();
-  return { displayBoard };
+  return { displayBoard, clearBoard };
 })();
 
 const gameController = (function () {
@@ -32,31 +38,6 @@ const gameController = (function () {
   let playerTwo = 'O';
   let currentPlayer = '';
   let gameOver = false;
-
-  const getPickedSpot = () => {
-    const getSpot = document.querySelectorAll('.gameGrid');
-
-    getSpot.forEach(e => {
-      e.addEventListener('click', () => {
-        console.log(e.getAttribute('id'));
-        let spotPicked = e.getAttribute('id');
-        if (gameBoard.board[spotPicked] == '') {
-          console.log(spotPicked);
-          return spotPicked;
-        }
-      });
-    });
-  };
-
-  // const getPickedSpot = () => {
-  //   while (true) {
-  //     let getSpot = parseInt(prompt('pick a spot: '));
-
-  //     if (gameBoard.board[getSpot] == '') {
-  //       return getSpot;
-  //     }
-  //   }
-  // };
 
   const checkWinner = () => {
     const winConditions = [
@@ -89,25 +70,34 @@ const gameController = (function () {
     }
   };
 
-  const playGame = () => {
-    for (let i = 1; i <= maxTurns; i++) {
-      let spotPicked = getPickedSpot();
-
-      if (i % 2 == 0) {
-        gameBoard.board[spotPicked] = playerOne;
-        currentPlayer = playerOne;
-      } else {
-        gameBoard.board[spotPicked] = playerTwo;
-        currentPlayer = playerTwo;
-      }
-      displayController.displayBoard();
-      checkWinner();
-      if (gameOver) {
-        return;
-      }
+  const placeMarker = () => {
+    if (maxTurns % 2 == 0) {
+      currentPlayer = playerOne;
+      gameBoard.board[spotPicked] = playerOne;
+      console.log(playerOne);
+      maxTurns--;
+    } else {
+      currentPlayer = playerTwo;
+      gameBoard.board[spotPicked] = playerTwo;
+      console.log(playerTwo);
+      maxTurns--;
     }
   };
-  getPickedSpot();
 
-  // playGame();
+  const playGame = () => {
+    const getSpot = document.querySelectorAll('.gameGrid');
+
+    getSpot.forEach(e => {
+      e.addEventListener('click', () => {
+        spotPicked = e.getAttribute('id');
+        if (gameBoard.board[spotPicked] == '') {
+          placeMarker(spotPicked);
+        }
+        checkWinner();
+        displayController.clearBoard;
+      });
+    });
+  };
+
+  playGame();
 })();
